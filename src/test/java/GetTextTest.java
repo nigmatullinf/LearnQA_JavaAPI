@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class GetTextTest {
 
+    //Ex4: GET-запрос
     @Test
     public void getTextTest() {
         Response response = RestAssured
