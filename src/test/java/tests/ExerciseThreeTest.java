@@ -93,7 +93,7 @@ public class ExerciseThreeTest {
         String actualDevice = response.get("device");
 
         assertEquals(expectedPlatform, actualPlatform, "Unexpected response in user agent: "+ userState + ". Key 'platform'" );
-        assertEquals(expectedBrowser, actualBrowser, "Wrong user agent response: " + ". Key 'browser'");
+        assertEquals(expectedBrowser, actualBrowser, "Wrong user agent response: " + userState + ". Key 'browser'");
         assertEquals(expectedDevice, actualDevice, "Unexpected user agent response in user agent: "+ userState + ". Key 'device'");
 
     }
