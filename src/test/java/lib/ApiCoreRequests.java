@@ -25,12 +25,22 @@ public class ApiCoreRequests {
     }
 
     @Step("Make a GET-request with token and cookie")
-    public Response makeGetRequest(String url, String token, String cookie) {
+    public Response makeGetUserInfoByIdRequest(String userId, String token, String cookie) {
         return given()
                 .filter(new AllureRestAssured())
                 .header(new Header("x-csrf-token", token))
                 .cookie("auth_sid", cookie)
-                .get(url)
+                .get("https://playground.learnqa.ru/api/user/" + userId)
+                .andReturn();
+    }
+
+    @Step("Make an authorization GET-request with token and cookie")
+    public Response makeGetAuthorizationRequest(String token, String cookie) {
+        return given()
+                .filter(new AllureRestAssured())
+                .header(new Header("x-csrf-token", token))
+                .cookie("auth_sid", cookie)
+                .get("https://playground.learnqa.ru/api/user/auth")
                 .andReturn();
     }
 
@@ -53,41 +63,41 @@ public class ApiCoreRequests {
     }
 
     @Step("Make a POST-request with email and password")
-    public Response makePostRequest(String url, Map<String,String> authData) {
+    public Response createUserPostRequest(Map<String,String> authData) {
         return given()
                 .filter(new AllureRestAssured())
                 .body(authData)
-                .post(url)
+                .post("https://playground.learnqa.ru/api/user/")
                 .andReturn();
     }
 
-    @Step("Make a PUT-request with cookie and header")
-    public Response makePutRequestWithCookieAndToken(String url, String cookie, String header, Map<String,String> authData) {
+    @Step("Make update user PUT-request with cookie and header")
+    public Response makeUserEditRequestWithCookieAndToken(String userId, String cookie, String header, Map<String,String> authData) {
         return given()
                 .filter(new AllureRestAssured())
                 .header(new Header("x-csrf-token", header))
                 .cookie("auth_sid", cookie)
                 .body(authData)
-                .put(url)
+                .put("https://playground.learnqa.ru/api/user/" + userId)
                 .andReturn();
     }
 
-    @Step("Make a PUT-request without cookie and header")
-    public Response makePutRequestWithoutCookieAndToken(String url, Map<String,String> authData) {
+    @Step("Make update user PUT-request without cookie and header")
+    public Response makeUserEditRequestWithoutCookieAndToken(String userId, Map<String,String> authData) {
         return given()
                 .filter(new AllureRestAssured())
                 .body(authData)
-                .put(url)
+                .put("https://playground.learnqa.ru/api/user/"+ userId)
                 .andReturn();
     }
 
-    @Step("Make a DELETE-request with cookie and header")
-    public Response makeDeleteRequest(String url, String cookie, String header) {
+    @Step("Make a user DELETE-request with cookie and header")
+    public Response makeUserDeleteRequest(String userId, String cookie, String header) {
         return given()
                 .filter(new AllureRestAssured())
                 .header(new Header("x-csrf-token", header))
                 .cookie("auth_sid", cookie)
-                .delete(url)
+                .delete("https://playground.learnqa.ru/api/user/" + userId)
                 .andReturn();
     }
 

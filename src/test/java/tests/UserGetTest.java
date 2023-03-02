@@ -30,7 +30,7 @@ public class UserGetTest extends BaseTestCase {
         String cookie = this.getCookie(responseGetAuth, "auth_sid");
 
         Response responseGetAnotherUser = apiCoreRequests
-                .makeGetRequest("https://playground.learnqa.ru/api/user/1", header, cookie);
+                .makeGetUserInfoByIdRequest("1", header, cookie);
 
         String[] unexpectedFields = {"firstName", "lastName", "email"};
 

@@ -31,7 +31,7 @@ public class UserEditTest extends BaseTestCase {
         Map<String, String> newData = DataGenerator.getRegistrationData();
 
         Response editUser = apiCoreRequests
-                .makePutRequestWithoutCookieAndToken("https://playground.learnqa.ru/api/user/1", newData);
+                .makeUserEditRequestWithoutCookieAndToken("1", newData);
 
         assertEquals("Auth token not supplied", editUser.getBody().asString(),
                 "Unexpected server response: " + editUser.getBody().asString());
@@ -46,12 +46,12 @@ public class UserEditTest extends BaseTestCase {
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
         Response responseCreateAuthFirst = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .createUserPostRequest(userData);
 
         Map<String, String> userData2 = DataGenerator.getRegistrationData();
 
         Response responseCreateAuthSecond = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData2);
+                .createUserPostRequest(userData2);
 
         String userIdSecond = responseCreateAuthSecond.jsonPath().getString("id");
 
@@ -71,8 +71,7 @@ public class UserEditTest extends BaseTestCase {
         newData.put("password", "newPassword");
 
         Response editUser = apiCoreRequests
-                .makePutRequestWithCookieAndToken("https://playground.learnqa.ru/api/user/" + userIdSecond,
-                        cookie, header, newData);
+                .makeUserEditRequestWithCookieAndToken(userIdSecond, cookie, header, newData);
 
         //CHECK SECOND ACCOUNT
         Response responseGetAuth2 = apiCoreRequests
@@ -82,7 +81,7 @@ public class UserEditTest extends BaseTestCase {
         String cookie2 = this.getCookie(responseGetAuth2, "auth_sid");
 
         Response responseSecondUserData = apiCoreRequests
-                .makeGetRequest("https://playground.learnqa.ru/api/user/" + userIdSecond, header2, cookie2);
+                .makeGetUserInfoByIdRequest(userIdSecond, header2, cookie2);
 
         assertEquals(userData2.get("username"), responseSecondUserData.jsonPath().get("username"), "Unexpected username in second account");
         assertEquals(userData2.get("firstName"), responseSecondUserData.jsonPath().get("firstName"),"Unexpected firstName in second account");
@@ -99,7 +98,7 @@ public class UserEditTest extends BaseTestCase {
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
         Response responseCreateUser = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .createUserPostRequest(userData);
 
         //LOGIN
         Response responseGetAuth = apiCoreRequests
@@ -115,8 +114,7 @@ public class UserEditTest extends BaseTestCase {
         newData.put("email", DataGenerator.getRandomEmailWithoutSign());
 
         Response editUser = apiCoreRequests
-                .makePutRequestWithCookieAndToken("https://playground.learnqa.ru/api/user/" + userId,
-                        cookie, header, newData);
+                .makeUserEditRequestWithCookieAndToken(userId, cookie, header, newData);
 
         assertEquals("Invalid email format", editUser.getBody().asString(), "Unexpected server response: " + editUser.getBody().asString());
     }
@@ -130,7 +128,7 @@ public class UserEditTest extends BaseTestCase {
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
         Response responseCreateUser = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .createUserPostRequest(userData);
 
         //LOGIN
         Response responseGetAuth = apiCoreRequests
@@ -146,8 +144,7 @@ public class UserEditTest extends BaseTestCase {
         newData.put("username", DataGenerator.getShortUsername());
 
         Response editUser = apiCoreRequests
-                .makePutRequestWithCookieAndToken("https://playground.learnqa.ru/api/user/" + userId,
-                        cookie, header, newData);
+                .makeUserEditRequestWithCookieAndToken(userId, cookie, header, newData);
 
         assertEquals("{\"error\":\"Too short value for field username\"}", editUser.getBody().asString(), "Unexpected server response: " + editUser.getBody().asString());
     }

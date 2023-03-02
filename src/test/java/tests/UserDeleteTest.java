@@ -34,13 +34,13 @@ public class UserDeleteTest extends BaseTestCase {
         String cookie = this.getCookie(responseGetAuth, "auth_sid");
 
         Response responseIdUser = apiCoreRequests
-                .makeGetRequest("https://playground.learnqa.ru/api/user/auth", header, cookie);
+                .makeGetAuthorizationRequest(header, cookie);
 
         String userId = responseIdUser.jsonPath().getString("user_id");
 
         //DELETE
         Response responseDeleteUser = apiCoreRequests
-                .makeDeleteRequest("https://playground.learnqa.ru/api/user/" + userId, cookie, header);
+                .makeUserDeleteRequest(userId, cookie, header);
 
         assertEquals("Please, do not delete test users with ID 1, 2, 3, 4 or 5.", responseDeleteUser.asString(), "Unexpected server response: " + responseDeleteUser.asString());
     }
@@ -53,7 +53,7 @@ public class UserDeleteTest extends BaseTestCase {
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
         Response responseCreateUser = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .createUserPostRequest(userData);
 
         //LOGIN
         Response responseGetAuth = apiCoreRequests
@@ -63,17 +63,17 @@ public class UserDeleteTest extends BaseTestCase {
         String cookie = this.getCookie(responseGetAuth, "auth_sid");
 
         Response responseIdUser = apiCoreRequests
-                .makeGetRequest("https://playground.learnqa.ru/api/user/auth", header, cookie);
+                .makeGetAuthorizationRequest(header, cookie);
 
         String userId = responseIdUser.jsonPath().getString("user_id");
 
         //DELETE
         Response responseDeleteUser = apiCoreRequests
-                .makeDeleteRequest("https://playground.learnqa.ru/api/user/" + userId, cookie, header);
+                .makeUserDeleteRequest(userId, cookie, header);
 
         //CHECK DELETE TRUE
         Response responseDeletedUser = apiCoreRequests
-                .makeGetRequest("https://playground.learnqa.ru/api/user/" + userId, header, cookie);
+                .makeGetUserInfoByIdRequest(userId, header, cookie);
 
         assertEquals("User not found", responseDeletedUser.getBody().asString(), "User is still exist!");
     }
@@ -86,12 +86,12 @@ public class UserDeleteTest extends BaseTestCase {
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
         Response responseCreateAuthFirst = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .createUserPostRequest(userData);
 
         Map<String, String> userData2 = DataGenerator.getRegistrationData();
 
         Response responseCreateAuthSecond = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData2);
+                .createUserPostRequest(userData2);
 
         String userIdSecond = responseCreateAuthSecond.jsonPath().getString("id");
 
@@ -104,11 +104,11 @@ public class UserDeleteTest extends BaseTestCase {
 
         //DELETE
         Response responseDeleteUser = apiCoreRequests
-                .makeDeleteRequest("https://playground.learnqa.ru/api/user/" + userIdSecond, cookie, header);
+                .makeUserDeleteRequest(userIdSecond, cookie, header);
 
         //CHECK DELETE
         Response responseDeletedUser = apiCoreRequests
-                .makeGetRequest("https://playground.learnqa.ru/api/user/" + userIdSecond, header, cookie);
+                .makeGetUserInfoByIdRequest(userIdSecond, header, cookie);
         Assertions.assertJsonHasField(responseDeletedUser, "username");
     }
 }

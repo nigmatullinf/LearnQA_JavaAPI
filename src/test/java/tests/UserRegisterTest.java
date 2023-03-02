@@ -35,7 +35,7 @@ public class UserRegisterTest extends BaseTestCase {
         regData = DataGenerator.getRegistrationData(regData);
 
         Response responsePostRegister = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", regData);
+                .createUserPostRequest(regData);
 
         assertEquals("Invalid email format", responsePostRegister.getBody().asString(), "Json value is not equal to expected value");
     }
@@ -82,7 +82,7 @@ public class UserRegisterTest extends BaseTestCase {
         }
 
         Response responsePostRegister = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", regData);
+                .createUserPostRequest(regData);
 
         assertEquals("The following required params are missed: " + key, responsePostRegister.getBody().asString(),
                 "Unexpected error message: " + responsePostRegister.getBody().asString());
@@ -98,7 +98,7 @@ public class UserRegisterTest extends BaseTestCase {
         regData = DataGenerator.getRegistrationData(regData);
 
         Response responsePostRegister = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", regData);
+                .createUserPostRequest(regData);
 
         assertEquals("The value of 'username' field is too short",
         responsePostRegister.getBody().asString(),
@@ -115,7 +115,7 @@ public class UserRegisterTest extends BaseTestCase {
         regData = DataGenerator.getRegistrationData(regData);
 
         Response responsePostRegister = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", regData);
+                .createUserPostRequest(regData);
 
         assertEquals("The value of 'username' field is too long",
                 responsePostRegister.getBody().asString(),

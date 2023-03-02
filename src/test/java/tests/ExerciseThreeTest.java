@@ -3,6 +3,7 @@ package tests;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,7 +26,7 @@ public class ExerciseThreeTest {
     //Ex10: Тест на короткую фразу
     @Test
     public void stringCheck() {
-        String string = "Tralalalalalalalalalalalalal";
+        String string = RandomStringUtils.randomAlphabetic(30);
 
         assertTrue(string.length() > 15, "string length is less than 15 symbols");
     }
@@ -33,13 +34,12 @@ public class ExerciseThreeTest {
     //Ex11: Тест запроса на метод cookie
     @Test
     public void cookieCheck() {
-        String expectedCookie = "{HomeWork=hw_value}";
-
         Response responseCookie = RestAssured
                 .get("https://playground.learnqa.ru/api/homework_cookie")
                 .andReturn();
-        String actualCookie = responseCookie.getCookies().toString();
-        assertEquals(actualCookie, expectedCookie, "cookies are NOT equal");
+
+        String actualCookie = responseCookie.getCookie("HomeWork");
+        assertEquals("hw_value", actualCookie, "cookies are NOT equal");
     }
 
     //Ex12: Тест запроса на метод header
@@ -66,7 +66,6 @@ public class ExerciseThreeTest {
                 .get("https://playground.learnqa.ru/api/homework_header")
                 .andReturn();
         String actualHeader = responseHeader.getHeaders().toString();
-        System.out.println(actualHeader);
         assertEquals(actualHeader, expectedHeader, "headers are NOT equal");
     }
 
