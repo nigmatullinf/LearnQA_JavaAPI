@@ -43,6 +43,7 @@ public class UserDeleteTest extends BaseTestCase {
                 .makeUserDeleteRequest(userId, cookie, header);
 
         assertEquals("Please, do not delete test users with ID 1, 2, 3, 4 or 5.", responseDeleteUser.asString(), "Unexpected server response: " + responseDeleteUser.asString());
+        Assertions.assertStatusCode(responseDeleteUser, 400);
     }
 
     @Test
@@ -76,6 +77,7 @@ public class UserDeleteTest extends BaseTestCase {
                 .makeGetUserInfoByIdRequest(userId, header, cookie);
 
         assertEquals("User not found", responseDeletedUser.getBody().asString(), "User is still exist!");
+        Assertions.assertStatusCode(responseDeleteUser, 400);
     }
 
     @Test
@@ -110,5 +112,6 @@ public class UserDeleteTest extends BaseTestCase {
         Response responseDeletedUser = apiCoreRequests
                 .makeGetUserInfoByIdRequest(userIdSecond, header, cookie);
         Assertions.assertJsonHasField(responseDeletedUser, "username");
+        Assertions.assertStatusCode(responseDeleteUser, 400);
     }
 }

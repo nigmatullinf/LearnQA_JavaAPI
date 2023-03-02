@@ -5,6 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
+import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +39,7 @@ public class UserRegisterTest extends BaseTestCase {
                 .createUserPostRequest(regData);
 
         assertEquals("Invalid email format", responsePostRegister.getBody().asString(), "Json value is not equal to expected value");
+        Assertions.assertStatusCode(responsePostRegister, 400);
     }
 
     //Ex15: Тесты на метод user
@@ -86,6 +88,7 @@ public class UserRegisterTest extends BaseTestCase {
 
         assertEquals("The following required params are missed: " + key, responsePostRegister.getBody().asString(),
                 "Unexpected error message: " + responsePostRegister.getBody().asString());
+        Assertions.assertStatusCode(responsePostRegister, 400);
     }
 
     //Ex15: Тесты на метод user
@@ -103,6 +106,7 @@ public class UserRegisterTest extends BaseTestCase {
         assertEquals("The value of 'username' field is too short",
         responsePostRegister.getBody().asString(),
         "Unexpected error message: " + responsePostRegister.getBody().asString());
+        Assertions.assertStatusCode(responsePostRegister, 400);
     }
 
     //Ex15: Тесты на метод user
@@ -120,5 +124,6 @@ public class UserRegisterTest extends BaseTestCase {
         assertEquals("The value of 'username' field is too long",
                 responsePostRegister.getBody().asString(),
                 "Unexpected error message: " + responsePostRegister.getBody().asString());
+        Assertions.assertStatusCode(responsePostRegister, 400);
     }
 }

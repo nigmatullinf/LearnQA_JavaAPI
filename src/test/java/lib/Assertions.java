@@ -2,6 +2,7 @@ package lib;
 
 import io.restassured.response.Response;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,6 +34,10 @@ public class Assertions {
         for (String unexpectedFieldName : unexpectedFieldNames) {
             Assertions.assertJsonHasNotField(Response, unexpectedFieldName);
         }
+    }
+
+    public static void assertStatusCode(Response Response, int expectedStatusCode) {
+        Response.then().assertThat().statusCode(equalTo(expectedStatusCode));
     }
 
 

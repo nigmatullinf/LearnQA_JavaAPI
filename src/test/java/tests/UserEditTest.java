@@ -5,6 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
+import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
@@ -35,6 +36,7 @@ public class UserEditTest extends BaseTestCase {
 
         assertEquals("Auth token not supplied", editUser.getBody().asString(),
                 "Unexpected server response: " + editUser.getBody().asString());
+        Assertions.assertStatusCode(editUser, 400);
     }
 
     //Ex17: Негативные тесты на PUT
@@ -87,6 +89,7 @@ public class UserEditTest extends BaseTestCase {
         assertEquals(userData2.get("firstName"), responseSecondUserData.jsonPath().get("firstName"),"Unexpected firstName in second account");
         assertEquals(userData2.get("lastName"), responseSecondUserData.jsonPath().get("lastName"),"Unexpected lastName in second account");
         assertEquals(userData2.get("email"), responseSecondUserData.jsonPath().get("email"),"Unexpected email in second account");
+        Assertions.assertStatusCode(editUser, 400);
     }
 
     //Ex17: Негативные тесты на PUT
@@ -117,6 +120,7 @@ public class UserEditTest extends BaseTestCase {
                 .makeUserEditRequestWithCookieAndToken(userId, cookie, header, newData);
 
         assertEquals("Invalid email format", editUser.getBody().asString(), "Unexpected server response: " + editUser.getBody().asString());
+        Assertions.assertStatusCode(editUser, 400);
     }
 
     //Ex17: Негативные тесты на PUT
@@ -147,5 +151,6 @@ public class UserEditTest extends BaseTestCase {
                 .makeUserEditRequestWithCookieAndToken(userId, cookie, header, newData);
 
         assertEquals("{\"error\":\"Too short value for field username\"}", editUser.getBody().asString(), "Unexpected server response: " + editUser.getBody().asString());
+        Assertions.assertStatusCode(editUser, 400);
     }
 }

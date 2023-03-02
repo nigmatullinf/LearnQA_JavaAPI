@@ -36,5 +36,6 @@ public class UserGetTest extends BaseTestCase {
 
         Assertions.assertJsonHasField(responseGetAnotherUser, "username");
         Assertions.assertJsonHasNotFields(responseGetAnotherUser, unexpectedFields);
+        Assertions.assertStatusCode(responseGetAnotherUser, 200);
     }
 }
